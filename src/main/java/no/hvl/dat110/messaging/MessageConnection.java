@@ -5,8 +5,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import no.hvl.dat110.TODO;
+import java.util.Arrays;
 
 
 public class MessageConnection {
@@ -36,31 +35,56 @@ public class MessageConnection {
 
 		byte[] data;
 		
-		// TODO - START
 		// encapsulate the data contained in the Message and write to the output stream
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-			
-		// TODO - END
-
+		data = MessageUtils.encapsulate(message);
+		
+		try {
+			outStream.write(data);
+			outStream.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public Message receive() {
-
-		Message message = null;
-		byte[] data;
 		
-		// TODO - START
+		Message message = null;
+	    byte[] data;
+	    
+	    
 		// read a segment from the input stream and decapsulate data into a Message
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+	    data = new byte[128];
+		try {
+	        int bytesRead = inStream.read(data);
+	        byte[] actualData = Arrays.copyOf(data, bytesRead);   
+	        message = MessageUtils.decapsulate(actualData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return message;
 		
+		
+		
+		/* readAllBytes() gjorde at testene ikke funket så måtte bruke read istedenfor^^
+		 * 
+		Message message = null;
+		 
+	    try {
+	        byte[] data = inStream.readAllBytes(); 
+	        // Decapsuler meldingen
+	        message = MessageUtils.decapsulate(data);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		    return message;
+		    
+		*/    
 	}
 
 	// close the connection by closing streams and the underlying socket	
