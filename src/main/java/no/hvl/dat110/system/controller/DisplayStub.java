@@ -18,7 +18,7 @@ public class DisplayStub extends RPCLocalStub {
 		byte[] msg = RPCUtils.marshallString(message);
 		
 		byte rpcid = (byte) Common.WRITE_RPCID;
-		byte[] result = rpcclient.call(rpcid, msg);
+		byte[] result = rpcclient.call(rpcid, msg); //sender data (temperaturen) til serveren (display)
 		
 		if (result != null) {
 			String decoded = RPCUtils.unmarshallString(result); //denne brukes ikke men stod i oppgaven at vi må unmarshalle

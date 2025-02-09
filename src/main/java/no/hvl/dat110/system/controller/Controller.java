@@ -38,7 +38,7 @@ public class Controller  {
 		// read value from sensor using RPC and write to display using RPC
 		for (int i = 0; i < N; i++ ) {
 			int temp = sensor.read();
-			String tempstr = "Temperatur: " + temp;
+			String tempstr = " " + temp ;
 			display.write(tempstr);
 			
 			try { //venter 2 sek før neste lesing 
