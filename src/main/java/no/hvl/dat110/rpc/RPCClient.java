@@ -21,9 +21,7 @@ public class RPCClient {
 		// TODO - START
 		// connect using the RPC client
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		connection = msgclient.connect();
 		// TODO - END
 	}
 	
@@ -32,9 +30,7 @@ public class RPCClient {
 		// TODO - START
 		// disconnect by closing the underlying messaging connection
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		connection.close();
 		// TODO - END
 	}
 
@@ -58,10 +54,14 @@ public class RPCClient {
 		The return value from the RPC call must be decapsulated according to the RPC message format
 
 		*/
-				
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
 		
+		byte[] rpcmsg = RPCUtils.encapsulate(rpcid, param); 
+		Message requestmsg = new Message(rpcmsg); // gjør om bytes til message 
+		connection.send(requestmsg); //sende rpc message til server
+		
+		Message replymsg = connection.receive(); //få svar fra server
+		returnval = RPCUtils.decapsulate(replymsg.getData()); //gjøre om fra message til byte[]	
+				
 		// TODO - END
 		return returnval;
 		
