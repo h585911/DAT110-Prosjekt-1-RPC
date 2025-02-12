@@ -31,41 +31,37 @@ public class MessageConnection {
 			ex.printStackTrace();
 		}
 	}
+	
+	/* Konstruktøren lager socket(start- og endepunkt. Så lager vi en inn- og utstream hvor vi kan sende 
+	 * pakker mellom nodene og ruterene. TCP/IP protokollen er en toveis kommunikasjon derfor må vi ha to
+	 * streamer. InputStream (DataInputStream) – For å motta data fra den andre enden. 
+	 * OutputStream (DataOutputStream) – For å sende data til den andre enden.
+	 */
 
-	public void send(Message message) {
+	public void send(Message message) throws IOException {
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null");
+        }
+        byte[] encoded = MessageUtils.encapsulate(message); // Pakk inn meldingen
+        if (encoded == null) {
+            throw new IOException("Encapsulation failed");
+        }
+        outStream.write(encoded);  // Send den ferdige pakken
+        outStream.flush(); // Sørg for at alt blir sendt umiddelbart
+    }
 
-		byte[] data;
-		
-		// TODO - START
-		// encapsulate the data contained in the Message and write to the output stream
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-			
-		// TODO - END
 
-	}
-
-	public Message receive() {
-
-		Message message = null;
-		byte[] data;
-		
-		// TODO - START
-		// read a segment from the input stream and decapsulate data into a Message
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
-		
-		return message;
-		
-	}
+	public Message receive() throws IOException {
+        byte[] received = new byte[MessageUtils.SEGMENTSIZE];  // Buffer for mottatt data
+        inStream.readFully(received);  // Les hele meldingen
+        if (received == null || received.length == 0) {
+            throw new IOException("Received an empty message");
+        }
+        return MessageUtils.decapsulate(received); // Pakker ut og returnerer en Message
+    }
 
 	// close the connection by closing streams and the underlying socket	
 	public void close() {
-
 		try {
 			
 			outStream.close();
@@ -80,3 +76,7 @@ public class MessageConnection {
 		}
 	}
 }
+
+		
+
+

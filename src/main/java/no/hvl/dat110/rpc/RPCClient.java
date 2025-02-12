@@ -1,5 +1,8 @@
 package no.hvl.dat110.rpc;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import no.hvl.dat110.TODO;
 import no.hvl.dat110.messaging.*;
 
@@ -16,25 +19,28 @@ public class RPCClient {
 		msgclient = new MessagingClient(server,port);
 	}
 	
-	public void connect() {
+	public void connect() throws UnknownHostException, IOException {
 		
 		// TODO - START
 		// connect using the RPC client
+		connection = msgclient.connect();
 		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		if (connection == null) {
+			throw new UnsupportedOperationException("Kunne ikke koble til serveren");
+		}
 		// TODO - END
 	}
 	
 	public void disconnect() {
 		
 		// TODO - START
+		if (connection == null) {
+			throw new UnsupportedOperationException("Feil ved lukking av tilkobling");
+		}
+	
 		// disconnect by closing the underlying messaging connection
-		
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
-		
+		connection.close();
+		connection = null;
 		// TODO - END
 	}
 
@@ -66,5 +72,15 @@ public class RPCClient {
 		return returnval;
 		
 	}
+	
+	/*
+		1️⃣ Implementer RPCClient (for tilkobling og kall).
+		2️⃣ Fullfør RPCUtils (for serialisering og deserialisering).
+		3️⃣ Fullfør RPCServer (for mottak og behandling av RPC-kall).
+		4️⃣ Fullfør RPCServerStopImpl (for å stoppe serveren).
+		5️⃣ Fullfør RPCClientStopStub (for å kalle stop() fra klienten).
+		6️⃣ Test systemet ved å koble en klient til serveren og sende et RPC-kall.
+		
+	 */
 
 }

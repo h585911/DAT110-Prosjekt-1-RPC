@@ -27,6 +27,11 @@
             <version>3.0.0-M8</version>
             <type>maven-plugin</type>
         </dependency>
+        <dependency>
+        	<groupId>apphttpclient</groupId>
+        	<artifactId>apphttpclient</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
