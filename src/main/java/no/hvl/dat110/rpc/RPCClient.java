@@ -51,34 +51,27 @@ public class RPCClient {
 	 param is the marshalled parameter of the method to be called
 	 */
 
-	public byte[] call(byte rpcid, byte[] param) {
+	public byte[] call(byte rpcid, byte[] param) throws IOException {
 		
 		byte[] returnval = null;
 		
-		// TODO - START
-
-		/*
-
-		The rpcid and param must be encapsulated according to the RPC message format
-
-		The return value from the RPC call must be decapsulated according to the RPC message format
-
-		*/
-				
-		if (true)
-			throw new UnsupportedOperationException(TODO.method());
+		byte[] rpcmsg = RPCUtils.encapsulate(rpcid, param); 
+		Message requestmsg = new Message(rpcmsg); // gjør om bytes til message 
+		connection.send(requestmsg); //sende rpc message til server
 		
-		// TODO - END
+		Message replymsg = connection.receive(); //få svar fra server
+		returnval = RPCUtils.decapsulate(replymsg.getData()); //gjøre om fra message til byte[]	og decaosulate for å få ut kun dataen og ikke RPC ID-en
+		
 		return returnval;
 		
 	}
 	
 	/*
-		1️⃣ Implementer RPCClient (for tilkobling og kall).
-		2️⃣ Fullfør RPCUtils (for serialisering og deserialisering).
-		3️⃣ Fullfør RPCServer (for mottak og behandling av RPC-kall).
-		4️⃣ Fullfør RPCServerStopImpl (for å stoppe serveren).
-		5️⃣ Fullfør RPCClientStopStub (for å kalle stop() fra klienten).
+		1️⃣ Implementer RPCClient (for tilkobling og kall). DONE
+		2️⃣ Fullfør RPCUtils (for serialisering og deserialisering). DONE
+		3️⃣ Fullfør RPCServer (for mottak og behandling av RPC-kall). DONE
+		4️⃣ Fullfør RPCServerStopImpl (for å stoppe serveren). DONE
+		5️⃣ Fullfør RPCClientStopStub (for å kalle stop() fra klienten). DONE
 		6️⃣ Test systemet ved å koble en klient til serveren og sende et RPC-kall.
 		
 	 */
